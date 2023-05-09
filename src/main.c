@@ -159,16 +159,15 @@ int main(int argc, char* argv[]) {
       dest_rect.x = (i % COL_COUNT) * CHAR_WIDTH;
       dest_rect.y = (i / COL_COUNT) * CHAR_HEIGHT;
 
-      int bg_index = bg_color_index(attrs);
-      // Blinking: fg alternates between fg and bg
-      int fg_index = blink_local && should_blink(attrs) ? bg_index : fg_color_index(attrs);
-      SDL_Color fg = COLORMAP[fg_index];
-      SDL_Color bg = COLORMAP[bg_index];
+      SDL_Color fg = COLORMAP[fg_color_index(attrs)];
+      SDL_Color bg = COLORMAP[bg_color_index(attrs)];
 
       SDL_SetRenderDrawColor(g_renderer, bg.r, bg.g, bg.b, bg.a);
       SDL_SetTextureColorMod(g_font_texture, fg.r, fg.g, fg.b);
       SDL_RenderFillRect(g_renderer, &dest_rect);
-      SDL_RenderCopy(g_renderer, g_font_texture, &src_rect, &dest_rect);
+      if (!blink_local || !should_blink(attrs)) {
+        SDL_RenderCopy(g_renderer, g_font_texture, &src_rect, &dest_rect);
+      }
     }
 
     SDL_SetRenderTarget(g_renderer, NULL);
