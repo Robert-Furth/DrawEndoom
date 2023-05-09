@@ -137,6 +137,7 @@ int main(int argc, char* argv[]) {
   g_blink_timer = SDL_AddTimer(300, blink_callback, NULL);
   if (!g_blink_timer) {
     eprintf("Could not initialize timer: %s\n", SDL_GetError());
+    eprintf("Blinking will be disabled.\n");
   }
 
   // SDL_SetTextureScaleMode(font, SDL_ScaleModeNearest);
