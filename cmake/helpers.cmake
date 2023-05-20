@@ -9,7 +9,7 @@ function(embed_resource input output)
   endif()
 
   if(NOT "${output}" IN_LIST "${RESOURCE_HEADERS}")
-    file(WRITE ${output} "")
+    file(WRITE ${output} "#pragma once\n")
     set(RESOURCE_HEADERS ${RESOURCE_HEADERS} ${output} PARENT_SCOPE)
   endif()
 
@@ -23,8 +23,8 @@ function(embed_resource input output)
   # Convert to C array format
   string(REGEX REPLACE "[0-9a-f][0-9a-f]" "0x\\0," hexdata ${hexdata})
   # Append data and size to file
-  file(APPEND ${output} "const unsigned char ${c_name}_DATA[] = {${hexdata}};\n")
-  file(APPEND ${output} "const size_t ${c_name}_SIZE = sizeof(${c_name}_DATA);\n")
+  file(APPEND ${output} "static const unsigned char ${c_name}_DATA[] = {${hexdata}};\n")
+  file(APPEND ${output} "static const size_t ${c_name}_SIZE = sizeof(${c_name}_DATA);\n")
 
 endfunction()
 
