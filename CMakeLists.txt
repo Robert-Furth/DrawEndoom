@@ -14,9 +14,10 @@ find_package(SDL2 REQUIRED)
 
 embed_resource("resources/font.bmp" "src/resources/font.h")
 
-add_executable(DrawEndoom
+add_executable(DrawEndoom WIN32
   src/main.c
   src/endoom.c
+  src/rendering.c
 )
 set_property(TARGET DrawEndoom PROPERTY VS_DPI_AWARE "PerMonitor")
 target_link_libraries(DrawEndoom PRIVATE ${SDL2_LIBRARIES})
