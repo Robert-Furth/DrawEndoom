@@ -129,6 +129,7 @@ static SDL_Texture* load_font(SDL_Renderer* renderer, const void* data, int size
 
 bool setup_renderer(const char* window_title, int window_w, int window_h) {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) return false;
+  SDL_SetHint(SDL_HINT_FORCE_RAISEWINDOW, "1");
 
   g_window = SDL_CreateWindow(window_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               window_w, window_h, SDL_WINDOW_ALLOW_HIGHDPI);
