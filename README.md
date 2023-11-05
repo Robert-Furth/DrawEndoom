@@ -2,8 +2,8 @@
 
 Ultra-simple wrapper around [DSDA-Doom](https://github.com/kraflab/dsda-doom/) that displays ENDOOM screens when it exits.
 
-Only for Windows, since I can't be bothered to compile DSDA-Doom for Mac/Linux/Haiku/TempleOS.
-Maybe when I'm bored.
+Only for Windows, since I can't be bothered to test it on Mac/Linux/Haiku/TempleOS.
+Maybe when I'm bored -- it probably isn't very hard.
 
 ## Why?
 
