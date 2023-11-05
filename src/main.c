@@ -36,13 +36,15 @@ char** get_wads_by_priority(int argc, char* argv[]) {
   char* iwad = NULL;
 
   for (int i = 1; i < argc; ++i) {
+    if (argv[i][0] == '-') {
+      next_is_pwad = false;
+      next_is_iwad = false;
+    }
+
     if (strcmp(argv[i], "-file") == 0) {
       next_is_pwad = true;
     } else if (strcmp(argv[i], "-iwad") == 0) {
       next_is_iwad = true;
-    } else if (argv[i][0] == '-') {
-      next_is_pwad = false;
-      next_is_iwad = false;
     } else if (next_is_iwad) {
       iwad = argv[i];
     } else if (next_is_pwad) {
