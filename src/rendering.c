@@ -45,9 +45,9 @@ void teardown_renderer(void) {
 }
 
 static void draw_frame(uint8_t* endoom, bool blink_flag) {
+  // Render to the canvas
   SDL_SetRenderTarget(g_renderer, g_tex_canvas);
 
-  // Render to the canvas
   for (int i = 0; i < ROW_COUNT * COL_COUNT; ++i) {
     int texture_index = endoom[i * 2];
     uint8_t attr_byte = endoom[i * 2 + 1];
@@ -83,7 +83,7 @@ static void draw_frame(uint8_t* endoom, bool blink_flag) {
     }
   }
 
-  // Copy the canvas to the screen (applying aspect ratio correction)
+  // Copy the canvas to the screen (possibly squashing/stretching it)
   SDL_SetRenderTarget(g_renderer, NULL);
   SDL_RenderCopy(g_renderer, g_tex_canvas, NULL, NULL);
   SDL_RenderPresent(g_renderer);
@@ -94,7 +94,7 @@ typedef struct {
   bool blink_on;
 } CallbackData;
 
-static Uint32 timer_callback(Uint32 interval, void* data) {
+static Uint32 blink_chars(Uint32 interval, void* data) {
   CallbackData* cbdata = (CallbackData*)data;
   draw_frame(cbdata->endoom, cbdata->blink_on);
   cbdata->blink_on = !cbdata->blink_on;
@@ -106,7 +106,7 @@ void show_endoom(uint8_t* endoom) {
   SDL_RaiseWindow(g_window);
 
   CallbackData cbdata = {.endoom = endoom, .blink_on = true};
-  SDL_TimerID timer = SDL_AddTimer(400, timer_callback, (void*)&cbdata);
+  SDL_TimerID timer = SDL_AddTimer(400, blink_chars, (void*)&cbdata);
 
   SDL_Event evt;
   while (SDL_WaitEvent(&evt)) {
@@ -120,6 +120,7 @@ static SDL_Texture* load_font(SDL_Renderer* renderer, const void* data, int size
   SDL_Surface* surf = SDL_LoadBMP_RW(SDL_RWFromConstMem(data, size), 1);
   if (!surf) return NULL;
 
+  // Set black to transparent
   SDL_SetColorKey(surf, SDL_TRUE, SDL_MapRGB(surf->format, 0, 0, 0));
 
   SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);

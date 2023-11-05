@@ -51,23 +51,28 @@ uint8_t* load_endoom_from_wad(const char* wad_path) {
   }
 
   uint8_t buf[16];
+
+  // Header (12 bytes): magic number, # of lumps, file offset of TOC
   fread(buf, sizeof(uint8_t), 12, fp);
   if (ferror(fp)) {
     perror("Error reading WAD file");
     goto cleanup;
   }
 
+  // Check magic number
   if (feof(fp) || (strncmp(buf, "PWAD", 4) && strncmp(buf, "IWAD", 4))) {
     eprintf("%s is not a WAD file.\n", wad_path);
     goto cleanup;
   }
 
+  // Seek to the TOC
   uint32_t toc_offset = ptr_to_u32(buf + 8);
   if (fseek(fp, toc_offset, SEEK_SET)) {
     perror("Error reading WAD file");
     goto cleanup;
   }
 
+  // Each TOC entry is 16 bytes long; look for one labeled "ENDOOM".
   for (;;) {
     fread(buf, sizeof(uint8_t), 16, fp);
     if (feof(fp)) {
@@ -79,6 +84,7 @@ uint8_t* load_endoom_from_wad(const char* wad_path) {
     }
 
     if (strncmp(buf + 8, "ENDOOM", 8) == 0) {
+      // Found it!
       uint32_t offset = ptr_to_u32(buf);
 
       if (fseek(fp, offset, SEEK_SET)) {
