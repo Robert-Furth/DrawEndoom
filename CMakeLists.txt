@@ -3,10 +3,11 @@ project(DrawEndoom VERSION 0.1.0)
 set_property(GLOBAL PROPERTY CMAKE_C_STANDARD 11)
 include("cmake/helpers.cmake")
 
-if(WIN32)
+option(USE_VENDORED "Use vendored dependencies (in ./deps/)" OFF)
+
+if(USE_VENDORED)
   set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};deps/")
 endif()
-
 find_package(SDL2 REQUIRED)
 
 #include(CTest) 
