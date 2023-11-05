@@ -8,7 +8,6 @@ Maybe when I'm bored.
 ## Why?
 
 'Cause DSDA-Doom's support for ENDOOM sucks (why'd they remove it to begin with?) and I like my ANSI artwork.
-
 Also because it's been a while since I've done anything in C.
 
 ## How?
