@@ -22,6 +22,10 @@ void reverse_list(char** list, size_t size) {
   }
 }
 
+/**
+ * Get a null-terminated list of paths to WADs in the order they should be
+ * searched (later PWADs first, followed by the IWAD.)
+ */
 char** get_wads_by_priority(int argc, char* argv[]) {
   bool next_is_pwad = false;
   bool next_is_iwad = false;
@@ -32,22 +36,17 @@ char** get_wads_by_priority(int argc, char* argv[]) {
   char* iwad = NULL;
 
   for (int i = 1; i < argc; ++i) {
-    if (next_is_iwad) {
-      iwad = argv[i];
-      next_is_iwad = false;
-      continue;
-    }
-
-    if (next_is_pwad) {
-      wad_list[wad_list_size++] = argv[i];
-      next_is_pwad = false;
-      continue;
-    }
-
     if (strcmp(argv[i], "-file") == 0) {
       next_is_pwad = true;
     } else if (strcmp(argv[i], "-iwad") == 0) {
       next_is_iwad = true;
+    } else if (argv[i][0] == '-') {
+      next_is_pwad = false;
+      next_is_iwad = false;
+    } else if (next_is_iwad) {
+      iwad = argv[i];
+    } else if (next_is_pwad) {
+      wad_list[wad_list_size++] = argv[i];
     }
   }
 
@@ -56,6 +55,9 @@ char** get_wads_by_priority(int argc, char* argv[]) {
   return wad_list;
 }
 
+/**
+ * Start DSDA-Doom.
+ */
 void start_source_port(char* argv0) {
   char* cmdline = GetCommandLine();
   char first_char = cmdline[0];
