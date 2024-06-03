@@ -12,7 +12,7 @@ Also because it's been a while since I've done anything in C.
 
 ## How?
 
-Compile it (you'll need SDL2), drop it into the DSDA-Doom folder, and run it instead of dsda-doom.exe.
+Compile it with cmake (you'll need SDL2), drop it into the DSDA-Doom folder, and run it instead of dsda-doom.exe.
 
 ## It doesn't work!
 
